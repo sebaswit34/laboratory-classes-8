@@ -32,9 +32,9 @@ app.use("/products", productsRoutes);
 app.use("/logout", logoutRoutes);
 app.use("/kill", killRoutes);
 app.use(homeRoutes);
-app.use((request, response) => {
+app.use(async (request, response) => {
   const { url } = request;
-  const cartCount = cartController.getProductsCount();
+  const cartCount = await cartController.getProductsCount();
 
   response.status(STATUS_CODE.NOT_FOUND).render("404", {
     headTitle: "404",

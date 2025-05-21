@@ -12,6 +12,7 @@
       <h1 class="heading"><%= product.name %></h1>
       <div><%= product.description %></div>
       <button onclick="deleteProduct('<%= product.name %>')">Delete</button>
+      <button onclick="addToCart('<%= product.name %>')">Add to Cart</button>
     </main>
     <script>
       function deleteProduct(name) {
@@ -26,6 +27,22 @@
             window.location.reload();
           } else {
             alert("Error while removing product.");
+          }
+        });
+      }
+
+      function addToCart(name) {
+        fetch('/cart/add', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `name=${encodeURIComponent(name)}`
+        }).then(response => {
+          if (response.ok) {
+            window.location.reload();
+          } else {
+            alert('Błąd podczas dodawania do koszyka.');
           }
         });
       }

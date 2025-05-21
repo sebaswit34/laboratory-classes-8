@@ -4,13 +4,21 @@
     src="https://source.unsplash.com/random/400x200?product1"
     alt="Produkt 1"
   />
-  <h3 class="card__title"><%= product.name %></h3>
-  <p class="card__description"><%= product.description %></p>
-  <p class="card__price"><%= product.price %></p>
-  <a href="/products/<%= product.name %>">Details</a>
-  <button onclick="deleteProduct('<%= product.name %>')">Delete</button>
+  <h3 class="card__title"><%= product && product.name ? product.name : 'Brak nazwy' %></h3>
+  <p class="card__description"><%= product && product.description ? product.description : 'Brak opisu' %></p>
+  <p class="card__price"><%= product && product.price !== undefined && product.price !== null ? product.price : 'Brak ceny' %></p>
+  <p class="product__price"><%= product && product.price !== undefined && product.price !== null ? product.price : 'Brak ceny' %></p>
+  <% const productName = (product && product.name) ? product.name : '' %>
+  <a href="/products/<%= productName %>" class="card__link">Details</a>
+  <button class="product__button product__button--add" onclick="addToCart('<%= productName %>')">Add to Cart</button>
+  <button class="product__button product__button--delete" onclick="deleteProduct('<%= productName %>')">Delete</button>
 </div>
 <script>
+  function addToCart(name) {
+    // TODO: Implementacja dodawania do koszyka
+    alert('Dodano ' + name + ' do koszyka!');
+  }
+
   function deleteProduct(name) {
     if (!confirm(`Are you sure you want to remove ${name}?`)) {
       return;

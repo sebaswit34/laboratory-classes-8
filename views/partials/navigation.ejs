@@ -11,13 +11,17 @@
     </li>
     <% }); %> <% } %>
     <li class="navigation__item navigation__cart">
-      Cart
-      <img
-        src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/shopping-cart.svg"
-        alt="Cart"
-        class="navigation__icon"
-      />
-      <span class="navigation__badge"><%= cartCount %></span>
+      <a href="/cart" class="navigation__link" style="display: flex; align-items: center;">
+        Cart
+        <img
+          src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/shopping-cart.svg"
+          alt="Cart"
+          class="navigation__icon"
+        />
+        <% if (cartCount > 0) { %>
+          <span class="navigation__badge"><%= cartCount %></span>
+        <% } %>
+      </a>
     </li>
   </ul>
 </nav>

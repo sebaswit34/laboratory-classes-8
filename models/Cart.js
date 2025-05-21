@@ -25,27 +25,21 @@ class Cart {
     }
   }
 
-  static async add(productName) {
+  static async add(product) {
     const db = getDatabase();
-
     try {
-      const product = await Product.findByName(productName);
-
-      if (!product) {
-        throw Error(`Product '${productName}' not found`);
+      if (!product || !product.name || product.price === undefined || product.price === null || !product.description) {
+        throw Error('Niekompletny obiekt produktu');
       }
-
       const cart = await this.getCart();
       const searchedProduct = cart.items.find(
-        (item) => item.product.name === productName
+        (item) => item.product.name === product.name
       );
-
       if (searchedProduct) {
         searchedProduct.quantity += 1;
       } else {
         cart.items.push({ product, quantity: 1 });
       }
-
       await db
         .collection(COLLECTION_NAME)
         .updateOne({}, { $set: { items: cart.items } });
@@ -111,6 +105,17 @@ class Cart {
         .updateOne({}, { $set: { items: [] } });
     } catch (error) {
       console.error("Error occurred while clearing cart");
+    }
+  }
+
+  static async deleteProductByName(productName) {
+    const db = getDatabase();
+    try {
+      const cart = await this.getCart();
+      const newItems = cart.items.filter(item => item.product.name !== productName);
+      await db.collection(COLLECTION_NAME).updateOne({}, { $set: { items: newItems } });
+    } catch (error) {
+      console.error("Error occurred while deleting product from cart");
     }
   }
 }
